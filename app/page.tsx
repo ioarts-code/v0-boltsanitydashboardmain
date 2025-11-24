@@ -316,19 +316,19 @@ export default function AdminPage() {
   }
 
   return (
-    <main className="text-xs bg-white text-white">
+    <main className="min-h-screen bg-gradient-to-br from-neutral-900 to-neutral-950 p-8">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-lg shadow-lg p-8">
+        <div className="bg-neutral-100 rounded-lg shadow-lg p-8">
           <div className="flex items-center justify-between mb-2">
-            <h1 className="text-4xl font-bold text-slate-900">Admin Dashboard</h1>
+            <h1 className="text-4xl font-bold text-neutral-900">Admin Dashboard</h1>
             <div className="flex items-center gap-2">
               <button
                 onClick={handleExportCSV}
-                className="px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition"
+                className="px-4 py-2 text-sm font-medium text-white bg-neutral-700 hover:bg-neutral-600 rounded-lg transition"
               >
                 Export CSV
               </button>
-              <label className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition cursor-pointer">
+              <label className="px-4 py-2 text-sm font-medium text-white bg-neutral-800 hover:bg-neutral-700 rounded-lg transition cursor-pointer">
                 {importingCSV ? "Importing..." : "Import CSV"}
                 <input
                   ref={csvFileInputRef}
@@ -341,26 +341,23 @@ export default function AdminPage() {
               </label>
             </div>
           </div>
-          <p className="text-slate-600 mb-8">Add a new post to your Sanity CMS</p>
+          <p className="text-neutral-600 mb-8">Add a new post to your Sanity CMS</p>
 
           {message && (
             <div
               className={`p-4 rounded-lg mb-6 ${
                 message.includes("successfully")
-                  ? "bg-green-50 text-green-800 border border-green-200"
-                  : "bg-red-50 text-red-800 border border-red-200"
+                  ? "bg-green-100 text-green-900 border border-green-300"
+                  : "bg-red-100 text-red-900 border border-red-300"
               }`}
             >
               <div className="whitespace-pre-line">{message}</div>
             </div>
           )}
 
-          <form
-            onSubmit={handleSubmit}
-            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-          >
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="title" className="block text-sm font-semibold text-slate-700 mb-2">
+              <label htmlFor="title" className="block text-sm font-semibold text-neutral-700 mb-2">
                 Post Title *
               </label>
               <input
@@ -370,12 +367,12 @@ export default function AdminPage() {
                 onChange={handleTitleChange}
                 placeholder="Enter post title"
                 required
-                className="w-full px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition border-slate-300 bg-slate-950 py-2"
+                className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-transparent transition bg-white text-neutral-900"
               />
             </div>
 
             <div>
-              <label htmlFor="slug" className="block text-sm font-semibold text-slate-700 mb-2">
+              <label htmlFor="slug" className="block text-sm font-semibold text-neutral-700 mb-2">
                 Slug *
               </label>
               <input
@@ -385,15 +382,15 @@ export default function AdminPage() {
                 onChange={handleSlugChange}
                 placeholder="post-slug"
                 required
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-slate-950"
+                className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-transparent transition bg-white text-neutral-900"
               />
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs text-neutral-500 mt-1">
                 Auto-generated from title. Use lowercase letters, numbers, and hyphens only.
               </p>
             </div>
 
             <div>
-              <label htmlFor="image" className="block text-sm font-semibold text-slate-700 mb-2">
+              <label htmlFor="image" className="block text-sm font-semibold text-neutral-700 mb-2">
                 Image *
               </label>
               <div className="space-y-3">
@@ -403,61 +400,61 @@ export default function AdminPage() {
                   id="image"
                   accept="image/*"
                   onChange={handleImageChange}
-                  className="w-full px-4 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 bg-slate-950 py-3.5 text-slate-300"
+                  className="w-full px-4 py-3.5 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-transparent transition file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-neutral-200 file:text-neutral-700 hover:file:bg-neutral-300 bg-white text-neutral-900"
                 />
                 {imagePreview && (
                   <div className="flex items-start gap-3">
                     <img
                       src={imagePreview || "/placeholder.svg"}
                       alt="Preview"
-                      className="max-w-sm max-h-64 object-contain rounded-lg border border-slate-200"
+                      className="max-w-sm max-h-64 object-contain rounded-lg border border-neutral-200"
                     />
                     <button
                       type="button"
                       onClick={handleImageUpload}
                       disabled={uploadingImage || !imageFile}
-                      className="px-4 py-2 text-white rounded-lg hover:bg-blue-700 disabled:bg-slate-400 font-medium text-sm transition bg-slate-700"
+                      className="px-4 py-2 text-white rounded-lg hover:bg-neutral-700 disabled:bg-neutral-400 font-medium text-sm transition bg-neutral-800"
                     >
                       {uploadingImage ? "Uploading..." : "Upload to Sanity"}
                     </button>
                   </div>
                 )}
                 {image && <p className="text-xs text-green-600 font-medium">✓ Image uploaded successfully</p>}
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-neutral-500">
                   Select an image file and click "Upload to Sanity" before publishing the post
                 </p>
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
+              <label className="block text-sm font-semibold text-neutral-700 mb-2">
                 Categories * (Select one or more)
               </label>
-              <div className="space-y-2 p-4 border border-slate-300 rounded-lg bg-black text-black">
+              <div className="space-y-2 p-4 border border-neutral-300 rounded-lg bg-white">
                 {CATEGORIES.map((cat) => (
                   <label
                     key={cat.value}
-                    className="flex items-center gap-2 cursor-pointer hover:bg-slate-100 p-2 rounded"
+                    className="flex items-center gap-2 cursor-pointer hover:bg-neutral-100 p-2 rounded"
                   >
                     <input
                       type="checkbox"
                       checked={categories.includes(cat.value)}
                       onChange={() => toggleCategory(cat.value)}
-                      className="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500"
+                      className="w-4 h-4 text-neutral-600 border-neutral-300 rounded focus:ring-neutral-500"
                     />
-                    <span className="text-white">{cat.label}</span>
+                    <span className="text-neutral-900">{cat.label}</span>
                   </label>
                 ))}
               </div>
               {categories.length > 0 && (
-                <p className="text-xs text-slate-600 mt-2">
+                <p className="text-xs text-neutral-600 mt-2">
                   Selected: {categories.map((c) => CATEGORIES.find((cat) => cat.value === c)?.label).join(", ")}
                 </p>
               )}
             </div>
 
             <div>
-              <label htmlFor="price" className="block text-sm font-semibold text-slate-700 mb-2">
+              <label htmlFor="price" className="block text-sm font-semibold text-neutral-700 mb-2">
                 Price *
               </label>
               <input
@@ -469,13 +466,13 @@ export default function AdminPage() {
                 required
                 min="0"
                 step="0.01"
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-slate-950"
+                className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-transparent transition bg-white text-neutral-900"
               />
-              <p className="text-xs text-slate-500 mt-1">Enter the price for this post</p>
+              <p className="text-xs text-neutral-500 mt-1">Enter the price for this post</p>
             </div>
 
             <div>
-              <label htmlFor="content" className="block text-sm font-semibold text-slate-700 mb-2">
+              <label htmlFor="content" className="block text-sm font-semibold text-neutral-700 mb-2">
                 Content *
               </label>
               <textarea
@@ -485,30 +482,30 @@ export default function AdminPage() {
                 placeholder="Write your post content here..."
                 required
                 rows={8}
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none bg-slate-950"
+                className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-transparent transition resize-none bg-white text-neutral-900"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full hover:bg-blue-700 disabled:bg-slate-400 font-semibold py-3 rounded-lg transition duration-200 ease-in-out transform hover:scale-105 disabled:hover:scale-100 bg-slate-950"
+              className="w-full bg-neutral-900 hover:bg-neutral-800 disabled:bg-neutral-400 text-white font-semibold py-3 rounded-lg transition duration-200 ease-in-out transform hover:scale-105 disabled:hover:scale-100"
             >
               {loading ? "Publishing..." : "Publish Post"}
             </button>
           </form>
         </div>
 
-        <div className="mt-8 bg-white rounded-lg shadow-lg p-8">
-          <h2 className="text-2xl font-bold mb-6 text-slate-900">Published Posts</h2>
+        <div className="mt-8 bg-neutral-100 rounded-lg shadow-lg p-8">
+          <h2 className="text-2xl font-bold mb-6 text-neutral-900">Published Posts</h2>
 
           {loadingPosts ? (
             <div className="text-center py-8">
-              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"></div>
-              <p className="mt-2 text-slate-600">Loading posts...</p>
+              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-neutral-600 border-r-transparent"></div>
+              <p className="mt-2 text-neutral-600">Loading posts...</p>
             </div>
           ) : posts.length === 0 ? (
-            <div className="text-center py-8 text-slate-500">
+            <div className="text-center py-8 text-neutral-500">
               <p>No posts yet. Create your first post above!</p>
               <p className="text-sm mt-2">
                 If you just published a post and don't see it here, check the browser console for error logs.
@@ -516,111 +513,113 @@ export default function AdminPage() {
             </div>
           ) : (
             <div className="space-y-4">
-              {posts.map((post) => (
-                <div key={post._id} className="border border-slate-200 rounded-lg p-6 hover:shadow-md transition">
-                  <div className="flex gap-4 justify-between">
-                    <div className="flex gap-4 flex-1 min-w-0">
-                      {post.image && (
-                        <div className="flex-shrink-0">
-                          <img
-                            src={post.image || "/placeholder.svg"}
-                            alt={post.title}
-                            className="max-w-xs max-h-48 object-contain rounded-lg"
-                            onLoad={(e) => handleImageLoad(post._id, e)}
-                          />
-                          {imageDimensions[post._id] && (
-                            <p className="text-xs text-slate-500 mt-1 text-center">
-                              {imageDimensions[post._id].width} × {imageDimensions[post._id].height} px
-                            </p>
-                          )}
-                        </div>
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <h3 className="text-xl font-semibold text-slate-900 mb-1">{post.title}</h3>
-                        <div className="flex items-start gap-2 mb-2 flex-wrap">
-                          {editingCategoryId === post._id ? (
-                            <div className="w-full space-y-2">
-                              <div className="flex flex-wrap gap-2">
-                                {CATEGORIES.map((cat) => (
-                                  <label
-                                    key={cat.value}
-                                    className="flex items-center gap-1 cursor-pointer bg-slate-50 hover:bg-slate-100 px-2 py-1 rounded border border-slate-200"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      checked={editingCategoryValues.includes(cat.value)}
-                                      onChange={() => toggleEditCategory(cat.value)}
-                                      className="w-3 h-3 text-blue-600 border-slate-300 rounded focus:ring-blue-500"
-                                    />
-                                    <span className="text-xs text-black">{cat.label}</span>
-                                  </label>
-                                ))}
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <button
-                                  onClick={() => handleUpdateCategory(post._id)}
-                                  className="px-3 py-1 text-xs font-medium text-white bg-green-600 hover:bg-green-700 rounded-md transition"
-                                >
-                                  Save
-                                </button>
-                                <button
-                                  onClick={cancelEditingCategory}
-                                  className="px-3 py-1 text-xs font-medium text-slate-600 hover:text-slate-800 transition"
-                                >
-                                  Cancel
-                                </button>
-                              </div>
-                            </div>
-                          ) : (
-                            <div className="flex items-center gap-2 flex-wrap">
-                              {post.category &&
-                              (Array.isArray(post.category) ? post.category.length > 0 : post.category) ? (
-                                (Array.isArray(post.category) ? post.category : [post.category]).map((cat) => (
+              {posts.map((post) => {
+                const categoryArray = Array.isArray(post.category)
+                  ? post.category
+                  : post.category
+                    ? [post.category]
+                    : []
+                return (
+                  <div
+                    key={post._id}
+                    className="border border-neutral-300 rounded-lg p-6 hover:shadow-md transition bg-white"
+                  >
+                    <div className="flex gap-4 justify-between">
+                      <div className="flex gap-4 flex-1 min-w-0">
+                        {post.image && (
+                          <div className="flex-shrink-0">
+                            <img
+                              src={post.image || "/placeholder.svg"}
+                              alt={post.title}
+                              className="max-w-xs max-h-48 object-contain rounded-lg"
+                              onLoad={(e) => handleImageLoad(post._id, e)}
+                            />
+                            {imageDimensions[post._id] && (
+                              <p className="text-xs text-neutral-500 mt-1 text-center">
+                                {imageDimensions[post._id].width} × {imageDimensions[post._id].height} px
+                              </p>
+                            )}
+                          </div>
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-xl font-semibold text-neutral-900 mb-1">{post.title}</h3>
+                          <p className="text-sm text-neutral-600 mb-2">
+                            Slug:{" "}
+                            <span className="font-mono bg-neutral-100 px-2 py-1 rounded">{post.slug.current}</span>
+                          </p>
+                          <p className="text-neutral-700 line-clamp-2 mb-3">{post.content}</p>
+                          <div className="flex flex-wrap items-center gap-2 mb-2">
+                            {editingCategoryId === post._id ? (
+                              <div className="flex flex-col gap-2 p-3 border border-neutral-300 rounded-lg bg-neutral-50 w-full">
+                                <p className="text-sm font-semibold text-neutral-700">Select categories:</p>
+                                <div className="space-y-2">
+                                  {CATEGORIES.map((cat) => (
+                                    <label key={cat.value} className="flex items-center gap-2 cursor-pointer">
+                                      <input
+                                        type="checkbox"
+                                        checked={editingCategoryValues.includes(cat.value)}
+                                        onChange={() => toggleEditCategory(cat.value)}
+                                        className="w-4 h-4 text-neutral-600 border-neutral-300 rounded focus:ring-neutral-500"
+                                      />
+                                      <span className="text-sm text-neutral-900">{cat.label}</span>
+                                    </label>
+                                  ))}
+                                </div>
+                                <div className="flex gap-2 mt-2">
                                   <button
-                                    key={cat}
-                                    onClick={() => startEditingCategory(post)}
-                                    className="inline-block px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800 hover:bg-blue-200 transition"
+                                    onClick={() => handleUpdateCategory(post._id)}
+                                    className="px-3 py-1 text-sm bg-neutral-800 text-white rounded hover:bg-neutral-700 transition"
                                   >
-                                    {CATEGORIES.find((c) => c.value === cat)?.label || cat}
+                                    Save
                                   </button>
-                                ))
-                              ) : (
-                                <button
-                                  onClick={() => startEditingCategory(post)}
-                                  className="inline-block px-2 py-1 text-xs font-medium rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 transition"
-                                >
-                                  Set Categories
-                                </button>
-                              )}
-                              <p className="text-lg font-bold text-slate-900">${post.price.toFixed(2)}</p>
-                            </div>
-                          )}
+                                  <button
+                                    onClick={cancelEditingCategory}
+                                    className="px-3 py-1 text-sm bg-neutral-300 text-neutral-700 rounded hover:bg-neutral-400 transition"
+                                  >
+                                    Cancel
+                                  </button>
+                                </div>
+                              </div>
+                            ) : (
+                              <>
+                                {categoryArray.map((cat) => {
+                                  const categoryLabel = CATEGORIES.find((c) => c.value === cat)?.label || cat
+                                  return (
+                                    <button
+                                      key={cat}
+                                      onClick={() => startEditingCategory(post)}
+                                      className="px-3 py-1 bg-neutral-800 text-white text-sm rounded-full hover:bg-neutral-700 transition cursor-pointer"
+                                    >
+                                      {categoryLabel}
+                                    </button>
+                                  )
+                                })}
+                                {categoryArray.length === 0 && (
+                                  <button
+                                    onClick={() => startEditingCategory(post)}
+                                    className="px-3 py-1 bg-neutral-300 text-neutral-700 text-sm rounded-full hover:bg-neutral-400 transition cursor-pointer"
+                                  >
+                                    No category
+                                  </button>
+                                )}
+                              </>
+                            )}
+                          </div>
+                          <span className="text-neutral-600 font-semibold">
+                            ${typeof post.price === "number" ? post.price.toFixed(2) : post.price}
+                          </span>
                         </div>
-                        <p className="text-sm text-slate-500 mb-2">
-                          Slug: <span className="font-mono text-slate-600">{post.slug.current}</span>
-                        </p>
-                        <p className="text-slate-700 line-clamp-2">{post.content}</p>
-                        <p className="text-xs text-slate-400 mt-2">
-                          Created:{" "}
-                          {new Date(post._createdAt).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
-                        </p>
                       </div>
+                      <button
+                        onClick={() => handleDelete(post._id)}
+                        className="text-red-600 hover:text-red-800 font-medium text-sm transition self-start"
+                      >
+                        Delete
+                      </button>
                     </div>
-                    <button
-                      onClick={() => handleDelete(post._id)}
-                      className="text-red-600 hover:text-red-800 font-medium text-sm self-start flex-shrink-0 transition"
-                    >
-                      Delete
-                    </button>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           )}
         </div>
