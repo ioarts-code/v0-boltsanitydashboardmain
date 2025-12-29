@@ -17,12 +17,8 @@ import {
 } from "@/lib/actions"
 
 const CATEGORIES = [
-  { label: "Controllers", value: "controllers" },
-  { label: "Games", value: "games" },
-  { label: "Swedish", value: "swedish" },
-  { label: "Cinematic", value: "cinematic" },
-  { label: "Music", value: "music" },
-  { label: "Misc", value: "misc" },
+  { label: "Deviant Vectors", value: "deviant-vectors" },
+  { label: "Etsy Products", value: "etsy-products" },
 ]
 
 export default function AdminPage() {
