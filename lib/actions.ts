@@ -471,3 +471,133 @@ export async function importPostsFromCSV(csvData: string) {
     }
   }
 }
+
+export async function addCategoryToPost(postId: string, category: string) {
+  try {
+    console.log("[v0] Adding category to post:", postId, "category:", category)
+
+    const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
+    const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET
+    const writeToken = process.env.SANITY_API_WRITE_TOKEN
+
+    if (!projectId || !dataset || !writeToken) {
+      throw new Error("Sanity configuration is missing.")
+    }
+
+    const client = getReadClient()
+    const post = await client.fetch<Post>(`*[_type == "post" && _id == $id][0]`, { id: postId })
+
+    if (!post) {
+      throw new Error("Post not found")
+    }
+
+    const currentCategories = Array.isArray(post.category) ? post.category : post.category ? [post.category] : []
+
+    if (currentCategories.includes(category)) {
+      return { success: true, message: "Category already exists" }
+    }
+
+    const updatedCategories = [...currentCategories, category]
+
+    const apiVersion = "v2024-12-01"
+    const url = `https://${projectId}.api.sanity.io/${apiVersion}/data/mutate/${dataset}`
+
+    const mutations = [
+      {
+        patch: {
+          id: postId,
+          set: { category: updatedCategories },
+        },
+      },
+    ]
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${writeToken}`,
+      },
+      body: JSON.stringify({ mutations }),
+    })
+
+    if (!response.ok) {
+      const result = await response.json()
+      console.error("[v0] Sanity update error:", result)
+      throw new Error(`Failed to add category: ${JSON.stringify(result)}`)
+    }
+
+    const result = await response.json()
+    console.log("[v0] Added category result:", result)
+
+    return { success: true }
+  } catch (error) {
+    console.error("[v0] Error adding category:", error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error occurred",
+    }
+  }
+}
+
+export async function removeCategoryFromPost(postId: string, category: string) {
+  try {
+    console.log("[v0] Removing category from post:", postId, "category:", category)
+
+    const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
+    const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET
+    const writeToken = process.env.SANITY_API_WRITE_TOKEN
+
+    if (!projectId || !dataset || !writeToken) {
+      throw new Error("Sanity configuration is missing.")
+    }
+
+    const client = getReadClient()
+    const post = await client.fetch<Post>(`*[_type == "post" && _id == $id][0]`, { id: postId })
+
+    if (!post) {
+      throw new Error("Post not found")
+    }
+
+    const currentCategories = Array.isArray(post.category) ? post.category : post.category ? [post.category] : []
+
+    const updatedCategories = currentCategories.filter((c) => c !== category)
+
+    const apiVersion = "v2024-12-01"
+    const url = `https://${projectId}.api.sanity.io/${apiVersion}/data/mutate/${dataset}`
+
+    const mutations = [
+      {
+        patch: {
+          id: postId,
+          set: { category: updatedCategories },
+        },
+      },
+    ]
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${writeToken}`,
+      },
+      body: JSON.stringify({ mutations }),
+    })
+
+    if (!response.ok) {
+      const result = await response.json()
+      console.error("[v0] Sanity update error:", result)
+      throw new Error(`Failed to remove category: ${JSON.stringify(result)}`)
+    }
+
+    const result = await response.json()
+    console.log("[v0] Removed category result:", result)
+
+    return { success: true }
+  } catch (error) {
+    console.error("[v0] Error removing category:", error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error occurred",
+    }
+  }
+}

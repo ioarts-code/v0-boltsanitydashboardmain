@@ -11,6 +11,8 @@ import {
   updatePostCategory,
   exportPostsToCSV,
   importPostsFromCSV,
+  addCategoryToPost,
+  removeCategoryFromPost,
   type Post,
 } from "@/lib/actions"
 
@@ -43,6 +45,7 @@ export default function AdminPage() {
   const [editingCategoryValues, setEditingCategoryValues] = useState<string[]>([])
   const [importingCSV, setImportingCSV] = useState(false)
   const csvFileInputRef = useRef<HTMLInputElement>(null)
+  const [addingCategoryId, setAddingCategoryId] = useState<string | null>(null)
 
   useEffect(() => {
     fetchPosts()
@@ -315,6 +318,35 @@ export default function AdminPage() {
     }
   }
 
+  const handleAddCategory = async (postId: string, category: string) => {
+    console.log("[v0] Client: Adding category:", category, "to post:", postId)
+    const result = await addCategoryToPost(postId, category)
+
+    if (result.success) {
+      console.log("[v0] Client: Category added successfully")
+      setAddingCategoryId(null)
+      fetchPosts()
+      setMessage("Category added successfully!")
+    } else {
+      setMessage(`Error: ${result.error}`)
+    }
+  }
+
+  const handleRemoveCategory = async (postId: string, category: string) => {
+    if (!confirm(`Remove "${category}" category?`)) return
+
+    console.log("[v0] Client: Removing category:", category, "from post:", postId)
+    const result = await removeCategoryFromPost(postId, category)
+
+    if (result.success) {
+      console.log("[v0] Client: Category removed successfully")
+      fetchPosts()
+      setMessage("Category removed successfully!")
+    } else {
+      setMessage(`Error: ${result.error}`)
+    }
+  }
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-neutral-900 to-neutral-950 p-8">
       <div className="max-w-4xl mx-auto">
@@ -549,60 +581,53 @@ export default function AdminPage() {
                           </p>
                           <p className="text-neutral-700 line-clamp-2 mb-3">{post.content}</p>
                           <div className="flex flex-wrap items-center gap-2 mb-2">
-                            {editingCategoryId === post._id ? (
-                              <div className="flex flex-col gap-2 p-3 border border-neutral-300 rounded-lg bg-neutral-50 w-full">
-                                <p className="text-sm font-semibold text-neutral-700">Select categories:</p>
-                                <div className="space-y-2">
-                                  {CATEGORIES.map((cat) => (
-                                    <label key={cat.value} className="flex items-center gap-2 cursor-pointer">
-                                      <input
-                                        type="checkbox"
-                                        checked={editingCategoryValues.includes(cat.value)}
-                                        onChange={() => toggleEditCategory(cat.value)}
-                                        className="w-4 h-4 text-neutral-600 border-neutral-300 rounded focus:ring-neutral-500"
-                                      />
-                                      <span className="text-sm text-neutral-900">{cat.label}</span>
-                                    </label>
+                            {categoryArray.map((cat) => {
+                              const categoryLabel = CATEGORIES.find((c) => c.value === cat)?.label || cat
+                              return (
+                                <div
+                                  key={cat}
+                                  className="flex items-center gap-1 px-3 py-1 bg-neutral-800 text-white text-sm rounded-full"
+                                >
+                                  <span>{categoryLabel}</span>
+                                  <button
+                                    onClick={() => handleRemoveCategory(post._id, cat)}
+                                    className="ml-1 hover:text-red-400 transition"
+                                    title="Remove category"
+                                  >
+                                    ×
+                                  </button>
+                                </div>
+                              )
+                            })}
+
+                            {addingCategoryId === post._id ? (
+                              <div className="flex flex-col gap-2 p-3 border border-neutral-300 rounded-lg bg-neutral-50">
+                                <p className="text-sm font-semibold text-neutral-700">Add category:</p>
+                                <div className="flex flex-wrap gap-2">
+                                  {CATEGORIES.filter((cat) => !categoryArray.includes(cat.value)).map((cat) => (
+                                    <button
+                                      key={cat.value}
+                                      onClick={() => handleAddCategory(post._id, cat.value)}
+                                      className="px-3 py-1 text-sm bg-neutral-700 text-white rounded hover:bg-neutral-600 transition"
+                                    >
+                                      + {cat.label}
+                                    </button>
                                   ))}
                                 </div>
-                                <div className="flex gap-2 mt-2">
-                                  <button
-                                    onClick={() => handleUpdateCategory(post._id)}
-                                    className="px-3 py-1 text-sm bg-neutral-800 text-white rounded hover:bg-neutral-700 transition"
-                                  >
-                                    Save
-                                  </button>
-                                  <button
-                                    onClick={cancelEditingCategory}
-                                    className="px-3 py-1 text-sm bg-neutral-300 text-neutral-700 rounded hover:bg-neutral-400 transition"
-                                  >
-                                    Cancel
-                                  </button>
-                                </div>
+                                <button
+                                  onClick={() => setAddingCategoryId(null)}
+                                  className="px-3 py-1 text-sm bg-neutral-300 text-neutral-700 rounded hover:bg-neutral-400 transition mt-2"
+                                >
+                                  Cancel
+                                </button>
                               </div>
                             ) : (
-                              <>
-                                {categoryArray.map((cat) => {
-                                  const categoryLabel = CATEGORIES.find((c) => c.value === cat)?.label || cat
-                                  return (
-                                    <button
-                                      key={cat}
-                                      onClick={() => startEditingCategory(post)}
-                                      className="px-3 py-1 bg-neutral-800 text-white text-sm rounded-full hover:bg-neutral-700 transition cursor-pointer"
-                                    >
-                                      {categoryLabel}
-                                    </button>
-                                  )
-                                })}
-                                {categoryArray.length === 0 && (
-                                  <button
-                                    onClick={() => startEditingCategory(post)}
-                                    className="px-3 py-1 bg-neutral-300 text-neutral-700 text-sm rounded-full hover:bg-neutral-400 transition cursor-pointer"
-                                  >
-                                    No category
-                                  </button>
-                                )}
-                              </>
+                              <button
+                                onClick={() => setAddingCategoryId(post._id)}
+                                className="px-3 py-1 bg-neutral-300 text-neutral-700 text-sm rounded-full hover:bg-neutral-400 transition"
+                              >
+                                + Add Category
+                              </button>
                             )}
                           </div>
                           <span className="text-neutral-600 font-semibold">
