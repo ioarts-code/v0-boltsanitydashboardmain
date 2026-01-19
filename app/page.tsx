@@ -346,9 +346,9 @@ export default function AdminPage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-neutral-900 to-neutral-950 p-8">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-neutral-100 rounded-lg shadow-lg p-8">
+        <div className="rounded-lg shadow-lg p-8 bg-white">
           <div className="flex items-center justify-between mb-2">
-            <h1 className="text-4xl font-bold text-neutral-900">Admin Dashboard</h1>
+            <h1 className="text-4xl font-bold text-neutral-900">Ioarts Dashboard</h1>
             <div className="flex items-center gap-2">
               <button
                 onClick={handleExportCSV}
@@ -524,7 +524,7 @@ export default function AdminPage() {
           </form>
         </div>
 
-        <div className="mt-8 bg-neutral-100 rounded-lg shadow-lg p-8">
+        <div className="mt-8 rounded-lg shadow-lg p-8 bg-white">
           <h2 className="text-2xl font-bold mb-6 text-neutral-900">Published Posts</h2>
 
           {loadingPosts ? (
