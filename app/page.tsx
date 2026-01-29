@@ -369,7 +369,7 @@ export default function AdminPage() {
               </label>
             </div>
           </div>
-          <p className="text-neutral-600 mb-8">Add a new post to your Sanity CMS</p>
+          <p className="text-neutral-600 mb-8">Add a new post to your Sanity CMS.</p>
 
           {message && (
             <div
